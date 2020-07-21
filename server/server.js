@@ -6,6 +6,7 @@ const express = require('express');
 require('dotenv').config();
 
 const apiRouter = require('./routes/api');
+const searchRouter = require('./routes/search');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,11 +17,13 @@ app.use(express.json());
 // Serve static assets
 app.use('/', express.static(path.resolve(__dirname, '../dist')));
 
-// API ROUTING
-// GET PORT/api/:id => return mix/max wave height for tomorrow
+// REPORT API ROUTING
 app.use('/api', apiRouter);
 
-// USER ROUTINGER
+// SEARCH ROUTING
+app.use('/search', searchRouter);
+
+// USER ROUTING
 // not yet implemented => app.use('login', loginRouter);
 
 // Catch-all route handler
