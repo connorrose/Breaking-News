@@ -1,0 +1,11 @@
+# System Files
+.DS_STORE
+
+# Secrets
+.env
+
+# NPM
+node_modules
+
+# Webpack
+dist/main.js

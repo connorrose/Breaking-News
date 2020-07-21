@@ -1,0 +1,52 @@
+{
+  "name": "surf",
+  "version": "1.0.0",
+  "description": "Surf forecast notifications, based on your preferences for your local break",
+  "main": "",
+  "scripts": {
+    "start": "export NODE_ENV=production && webpack && node server/server.js",
+    "dev": "export NODE_ENV=development && (webpack-dev-server --open & nodemon server/server.js)",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/connorrose/Surf.git"
+  },
+  "keywords": [
+    "surf",
+    "surfing",
+    "forecast"
+  ],
+  "author": "Connor Rose Delisle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/connorrose/Surf/issues"
+  },
+  "homepage": "https://github.com/connorrose/Surf#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@btmills/prettier": "^2.0.5",
+    "babel-loader": "^8.1.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.25",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
