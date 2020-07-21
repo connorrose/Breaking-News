@@ -22,7 +22,9 @@ module.exports = {
     ],
   },
   devServer: {
-    publicPath: '/dist',
+    publicPath: '/dist/',
+    contentBase: path.join(__dirname, 'dist'),
+    port: 8080,
   },
   resolve: {
     extensions: ['.js', '.jsx'],
