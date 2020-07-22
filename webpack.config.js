@@ -23,6 +23,11 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
+    watchContentBase: true,
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
     proxy: [
       {
         context: ['/api', '/search'],
