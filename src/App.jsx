@@ -1,31 +1,45 @@
+/* eslint-disable react/no-unused-state */
 // App component logic
 import React, { Component } from 'react';
 import Search from './containers/Search';
-import Report from './containers/Report';
+import Report from './components/Report';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      localBreak: '',
+      surflineID: '',
+      spotName: null,
+      humanRelation: null,
+      waterTemp: null,
+      forecast: [],
     };
 
     this.handleSelection = this.handleSelection.bind(this);
   }
 
   handleSelection(e) {
-    this.setState({ localBreak: e.target.id });
+    const localBreak = e.target.id;
+
+    fetch(`/api/${localBreak}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        const { surflineID, spotName, humanRelation, waterTemp, forecast } = data;
+        this.setState({ surflineID, spotName, humanRelation, waterTemp, forecast });
+      })
+      .catch((err) => console.log(err));
   }
 
   render() {
-    const { localBreak } = this.state;
+    const { surflineID } = this.state;
 
     return (
       <>
         <h5>React App Rendered</h5>
         <Search onSelection={this.handleSelection} />
-        {localBreak !== '' && <Report breakID={localBreak} />}
+        {surflineID !== '' && <Report reportData={this.state} />}
       </>
     );
   }
