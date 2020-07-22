@@ -14,10 +14,15 @@ report.searchDB = async (req, res, next) => {
     if (result === null) return next();
 
     // 2) If found, directly return response
-    const { spotName, humanRelation, waterTemp } = result;
-    return res
-      .status(200)
-      .send({ surflineID, spotName, humanRelation, waterTemp, message: 'Returned from cache' });
+    const { spotName, humanRelation, waterTemp, forecast } = result;
+    return res.status(200).send({
+      surflineID,
+      spotName,
+      humanRelation,
+      waterTemp,
+      forecast,
+      message: 'Returned from cache',
+    });
   } catch (err) {
     return next({ log: err.message });
   }

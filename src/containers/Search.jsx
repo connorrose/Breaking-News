@@ -5,10 +5,12 @@ import Results from '../components/Results';
 class Search extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       query: '',
       results: [],
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
   }
@@ -18,9 +20,7 @@ class Search extends Component {
   }
 
   handleSearch() {
-    // on search click, use event to capture search bar value & hit server
     let { query } = this.state;
-
     // console.log('Handling search...');
 
     if (query !== '') {
@@ -36,11 +36,16 @@ class Search extends Component {
 
   render() {
     const { query, results } = this.state;
+    const { onSelection } = this.props;
 
     return (
       <>
         <Searchbar value={query} onChange={this.handleChange} onSearch={this.handleSearch} />
-        {results.length > 0 ? <Results results={results} /> : <p>No matching results...</p>}
+        {results.length > 0 ? (
+          <Results results={results} onSelection={onSelection} />
+        ) : (
+          <p>No matching results...</p>
+        )}
       </>
     );
   }
