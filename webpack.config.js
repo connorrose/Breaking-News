@@ -22,9 +22,13 @@ module.exports = {
     ],
   },
   devServer: {
-    publicPath: '/dist/',
     contentBase: path.join(__dirname, 'dist'),
-    port: 8080,
+    proxy: [
+      {
+        context: ['/api', '/search'],
+        target: 'http://localhost:3000',
+      },
+    ],
   },
   resolve: {
     extensions: ['.js', '.jsx'],
