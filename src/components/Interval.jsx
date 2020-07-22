@@ -6,14 +6,36 @@ const Interval = ({ timestamp, surf }) => {
 
   return (
     <div className="interval">
-      <h4>
-        <em>
-          {time.toLocaleDateString()}: {time.toLocaleTimeString()}
-        </em>
-      </h4>
-      <h5>Conditions: {optimalScore === 2 ? 'Totally Tubular!' : 'Kook City...'}</h5>
-      <p>Min Wave Height: {min}ft</p>
-      <p>Max Wave Height: {max}ft</p>
+      <p>
+        <strong>
+          {time.toLocaleDateString()}
+          <br />
+          <br />
+          {time.toLocaleTimeString()}
+        </strong>
+      </p>
+      <p>
+        <strong>Conditions:</strong>
+        <br />
+        <br />
+        {optimalScore === 2 ? (
+          <span className="tubular">Totally Tubular!</span>
+        ) : (
+          <span className="kook">Kook City...</span>
+        )}
+      </p>
+      <p>
+        <strong>Min Wave Height:</strong>
+        <br />
+        <br />
+        {min} ft
+      </p>
+      <p>
+        <strong>Max Wave Height:</strong>
+        <br />
+        <br />
+        {max} ft
+      </p>
     </div>
   );
 };

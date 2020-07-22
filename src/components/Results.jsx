@@ -6,7 +6,11 @@ const Results = ({ results, onSelection }) => {
     <ResultDisplay key={result.surflineID} details={result} onSelection={onSelection} />
   ));
 
-  return <div id="search-result-container">{resultArr}</div>;
+  return (
+    <div id="search-result-container">
+      {resultArr.length > 0 ? resultArr : <p>No results found</p>}
+    </div>
+  );
 };
 
 export default Results;

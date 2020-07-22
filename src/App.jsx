@@ -2,6 +2,7 @@
 // App component logic
 import React, { Component } from 'react';
 import Search from './containers/Search';
+import Settings from './containers/Settings';
 import Report from './components/Report';
 
 class App extends Component {
@@ -37,8 +38,16 @@ class App extends Component {
 
     return (
       <>
-        <h5>React App Rendered</h5>
-        <Search onSelection={this.handleSelection} />
+        <header>
+          <h1>Surf's Up!</h1>
+          <button id="login" type="button">
+            Login
+          </button>
+        </header>
+        <div id="control-container">
+          <Search onSelection={this.handleSelection} />
+          <Settings />
+        </div>
         {surflineID !== '' && <Report reportData={this.state} />}
       </>
     );

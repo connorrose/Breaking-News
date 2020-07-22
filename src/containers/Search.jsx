@@ -9,6 +9,7 @@ class Search extends Component {
     this.state = {
       query: '',
       results: [],
+      initialLoad: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -29,24 +30,21 @@ class Search extends Component {
 
       fetch(`/search?spot=${query}`)
         .then((response) => response.json())
-        .then(({ results }) => this.setState({ results, query: '' }))
+        .then(({ results }) => this.setState({ results, query: '', initialLoad: false }))
         .catch((err) => console.log(err));
     }
   }
 
   render() {
-    const { query, results } = this.state;
+    const { query, results, initialLoad } = this.state;
     const { onSelection } = this.props;
 
     return (
-      <>
+      <div id="search-container">
+        <h2>Search</h2>
         <Searchbar value={query} onChange={this.handleChange} onSearch={this.handleSearch} />
-        {results.length > 0 ? (
-          <Results results={results} onSelection={onSelection} />
-        ) : (
-          <p>No matching results...</p>
-        )}
-      </>
+        {!initialLoad && <Results results={results} onSelection={onSelection} />}
+      </div>
     );
   }
 }
