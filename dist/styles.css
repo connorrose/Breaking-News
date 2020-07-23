@@ -12,6 +12,8 @@
 
   --div-border: 2px solid rgba(var(--deep-purple), 1);
 
+  --display-border: 2px solid rgba(var(--pinkish), 1);
+
   --control-height: 35vh;
 }
 
@@ -69,7 +71,7 @@ h2 {
 h4 {
   font-size: 1rem;
   background-color: rgba(var(--off-white), 1);
-  border: 2px solid rgba(var(--pinkish), 1);
+  border: var(--display-border);
   border-radius: 4px;
   margin: 15px 10px 25px;
   padding: 10px 15px;
@@ -107,7 +109,7 @@ h4 > p {
 }
 
 #searchbar-container > input {
-  border: 2px solid rgba(var(--deep-purple), 1);
+  border: var(--div-border);
   border-radius: 4px;
   background-color: rgba(var(--off-white), 1);
   height: 30px;
@@ -124,6 +126,34 @@ h4 > p {
   flex-basis: 50%;
   border-left: var(--div-border);
   border-bottom: var(--div-border);
+}
+
+#greeting {
+  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgba(var(--pinkish), 0.9);
+  margin: 1rem;
+}
+
+#current-settings {
+  width: 86%;
+  margin: 0px auto;
+  border: var(--display-border);
+  border-radius: 4px;;
+  background-color: rgba(var(--off-white), 1);
+  text-align: left;
+}
+
+#current-settings p {
+  margin: 1rem;
+  font-style: italic;
+}
+
+#current-settings strong {
+  font-style: normal;
+  display: inline-block;
+  width: 60%;
 }
 
 #report-container {
@@ -157,7 +187,7 @@ h4 > p {
   margin: 10px;
   padding: 0px 20px;
   background-color: rgba(var(--off-white), 1);
-  border: 2px solid rgba(var(--pinkish), 1);
+  border: var(--display-border);
   border-radius: 4px;
   text-align: left;
 }
@@ -173,7 +203,7 @@ h4 > p {
   justify-content: space-evenly;
   align-content: center;
   background-color: rgba(var(--off-white), 1);
-  border: 2px solid rgba(var(--pinkish), 1);
+  border: var(--display-border);
   border-radius: 4px;
   width: 90%;
   margin: 10px auto;

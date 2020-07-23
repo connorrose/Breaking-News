@@ -44,8 +44,9 @@ const Spot = mongoose.model('spot', spotSchema);
 
 const userSchema = new Schema({
   username: { type: String, required: true },
+  homeBreak: { type: String },
   days: { type: Number, default: 2 },
-  height: { type: Number },
+  height: { type: Number, default: 1 },
 });
 
 const User = mongoose.model('user', userSchema);

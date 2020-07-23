@@ -36,7 +36,7 @@ report.fetchData = async (req, res, next) => {
       `https://services.surfline.com/kbyg/spots/reports?spotId=${surflineID}`
     );
     const forecast = axios.get(
-      `https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${surflineID}&days=2&intervalHours=6`
+      `https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${surflineID}&days=5&intervalHours=6`
     );
     // Store response on res.locals
     res.locals.surflineID = surflineID;

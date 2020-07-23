@@ -13,6 +13,7 @@ require('dotenv').config();
 const { User } = require('./models/reportModels');
 const apiRouter = require('./routes/api');
 const searchRouter = require('./routes/search');
+const userRouter = require('./routes/user');
 
 /* ----- PRE-CONFIG ----- */
 
@@ -101,6 +102,9 @@ app.use('/api', apiRouter);
 app.use('/search', searchRouter);
 
 // USER ROUTING
+app.use('/user', userRouter);
+
+// LOGIN ROUTING
 app.get('/login/failed', (req, res) =>
   res.status(401).json({ success: false, message: 'user authentication failed' })
 );
@@ -110,7 +114,7 @@ app.get('/login', passport.authenticate('github', { scope: ['read:user'] }));
 app.get(
   '/login/callback',
   passport.authenticate('github', {
-    successRedirect: 'http://localhost:3000',
+    successRedirect: '/',
     failureRedirect: '/login/failed',
   })
 );
@@ -126,10 +130,10 @@ app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'EXPRESS ERROR: handler caught unknown middleware error',
     status: 500,
-    message: { err: 'An error occured' },
+    message: { error: 'An error occured' },
   };
   const error = { ...defaultErr, ...err };
-  console.log(error.log);
+  console.log(err.log);
   return res.status(error.status).json(error.message);
 });
 
