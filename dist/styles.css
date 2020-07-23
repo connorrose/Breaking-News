@@ -138,6 +138,7 @@ h4 > p {
 
 #current-settings {
   width: 86%;
+  max-width: 40rem;
   margin: 0px auto;
   border: var(--display-border);
   border-radius: 4px;;
@@ -146,14 +147,25 @@ h4 > p {
 }
 
 #current-settings p {
-  margin: 1rem;
+  display: flex;
+  direction: row;
+  justify-content: space-between;
+  margin: 1rem 1rem;
   font-style: italic;
 }
 
 #current-settings strong {
   font-style: normal;
-  display: inline-block;
-  width: 60%;
+}
+
+#alert-lead {
+  border-top: 1px solid rgba(var(--pinkish), 1);
+  border-bottom: 1px solid rgba(var(--pinkish), 1);
+  padding: 0.5rem 0rem;
+}
+
+#select-settings {
+  padding: 25px;
 }
 
 #report-container {

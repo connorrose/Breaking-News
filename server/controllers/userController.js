@@ -1,4 +1,4 @@
-const { User } = require('../models/reportModels');
+const { Spot, User } = require('../models/reportModels');
 
 const userController = {};
 
@@ -13,6 +13,12 @@ userController.findUser = async (req, res, next) => {
       // Get user data
       const userData = await User.findOne({ _id: userID });
       let { username, homeBreak, days, height } = userData;
+
+      // Get break name from Surfline ID
+      if (homeBreak) {
+        const { spotName } = await Spot.findOne({ surflineID: homeBreak });
+        homeBreak = spotName;
+      }
 
       // Validate
       username = username || 'unknown user';
@@ -33,6 +39,27 @@ userController.findUser = async (req, res, next) => {
     // Return empty object to client if user does not exist
     res.locals.user = {};
     return next();
+  }
+};
+
+userController.setHomeBreak = async (req, res, next) => {
+  // req.params.surflineID
+  const { surflineID } = req.params;
+  if (surflineID) {
+    try {
+      const { spotName } = await Spot.findOne({ surflineID });
+      if (spotName) {
+        const userID = req.session.passport.user;
+        await User.findOneAndUpdate({ _id: userID }, { homeBreak: surflineID });
+        res.locals.spotName = spotName;
+        return next();
+      }
+      return next({ log: 'Could not locate break in databse' });
+    } catch (err) {
+      return next({ log: `Error setting user break: ${err}` });
+    }
+  } else {
+    return next({ message: { err: 'What have you done?!' } });
   }
 };
 

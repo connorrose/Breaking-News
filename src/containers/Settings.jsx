@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Selection from '../components/Selection';
 
 class Settings extends Component {
   constructor(props) {
@@ -10,6 +11,8 @@ class Settings extends Component {
       days: null,
       height: null,
     };
+
+    this.handleSetHome = this.handleSetHome.bind(this);
   }
 
   componentDidMount() {
@@ -20,6 +23,24 @@ class Settings extends Component {
         return username ? this.setState({ username, homeBreak, days, height }) : null;
       })
       .catch((err) => console.log(err));
+  }
+
+  handleSetHome() {
+    const { currentBreak } = this.props;
+    if (!currentBreak) {
+      // eslint-disable-next-line no-alert
+      alert('No break selected!\nUse the search feature to find a break.');
+    } else {
+      fetch(`/user/break/${currentBreak}`, { method: 'POST' })
+        .then((response) => response.json())
+        .then((data) => {
+          const { homeBreak } = data;
+          return this.setState(
+            homeBreak ? { homeBreak } : { homeBreak: "Couldn't fetch break name" }
+          );
+        })
+        .catch((err) => console.log(err));
+    }
   }
 
   render() {
@@ -36,7 +57,7 @@ class Settings extends Component {
                 <strong>Home Break: </strong>
                 {homeBreak || 'None selected'}
               </p>
-              <p>
+              <p id="alert-lead">
                 <strong>Alert Lead Time: </strong>
                 {days} days
               </p>
@@ -45,9 +66,7 @@ class Settings extends Component {
                 {height} ft
               </p>
             </div>
-            <div id="select-settings">
-              <p>Settings selection will be here</p>
-            </div>
+            <Selection onSetHome={this.handleSetHome} />
           </>
         )}
       </div>

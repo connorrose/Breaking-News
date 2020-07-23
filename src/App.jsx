@@ -53,7 +53,7 @@ class App extends Component {
         </header>
         <div id="control-container">
           <Search onSelection={this.handleSelection} />
-          <Settings />
+          <Settings currentBreak={surflineID} />
         </div>
         {surflineID !== '' && <Report reportData={this.state} />}
       </>
