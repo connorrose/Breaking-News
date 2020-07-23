@@ -152,12 +152,14 @@ h4 > p {
 .search-result {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin: 10px;
+  padding: 0px 20px;
   background-color: rgba(var(--off-white), 1);
   border: 2px solid rgba(var(--pinkish), 1);
   border-radius: 4px;
+  text-align: left;
 }
 
 .search-result button {

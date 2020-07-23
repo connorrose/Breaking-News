@@ -5,7 +5,6 @@ const ResultDisplay = ({ details, onSelection }) => (
     <p>
       <strong>{details.spotName}</strong>
       <br />
-      {'Location: '}
       <em>
         {details.state}, {details.country}
       </em>
