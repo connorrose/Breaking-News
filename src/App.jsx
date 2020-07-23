@@ -15,9 +15,11 @@ class App extends Component {
       humanRelation: null,
       waterTemp: null,
       forecast: [],
+      user: null,
     };
 
     this.handleSelection = this.handleSelection.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   handleSelection(e) {
@@ -33,6 +35,11 @@ class App extends Component {
       .catch((err) => console.log(err));
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  handleLogin() {
+    window.open('http://localhost:3000/login', '_self');
+  }
+
   render() {
     const { surflineID } = this.state;
 
@@ -40,7 +47,7 @@ class App extends Component {
       <>
         <header>
           <h1>Surf's Up!</h1>
-          <button id="login" type="button">
+          <button id="login" type="button" onClick={this.handleLogin}>
             Login
           </button>
         </header>

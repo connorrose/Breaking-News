@@ -8,6 +8,8 @@ mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
     dbName: 'Surf-App',
   })
   .then(() => console.log('Connected to MongoDB: Surf-App'))
@@ -40,6 +42,15 @@ const spotSchema = new Schema({
 
 const Spot = mongoose.model('spot', spotSchema);
 
+const userSchema = new Schema({
+  username: { type: String, required: true },
+  days: { type: Number, default: 2 },
+  height: { type: Number },
+});
+
+const User = mongoose.model('user', userSchema);
+
 module.exports = {
   Spot,
+  User,
 };

@@ -23,6 +23,7 @@
       "default-case-last": "error",
       "default-param-last": ["error"],
       "no-constant-condition": "error",
+      "no-underscore-dangle": "off",
       "no-useless-call": "error",
       "prefer-exponentiation-operator": "error",
       "prefer-regex-literals": "error",
