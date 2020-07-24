@@ -6,14 +6,17 @@ const report = {};
 
 report.searchDB = async (req, res, next) => {
   try {
-    // 1) check database for matching report
+    // Check database for existing report
     const { surflineID } = req.params;
     const result = await db.findOne({ surflineID });
 
     // If not found, proceed with middleware
-    if (result === null) return next();
+    if (result === null) {
+      res.locals.surflineID = surflineID;
+      return next();
+    }
 
-    // 2) If found, directly return response
+    // Short-Circuit Response if report found in database
     const { spotName, humanRelation, waterTemp, forecast } = result;
     return res.status(200).send({
       surflineID,
@@ -30,17 +33,17 @@ report.searchDB = async (req, res, next) => {
 
 report.fetchData = async (req, res, next) => {
   try {
-    // 3) Query Surfline API
-    const { surflineID } = req.params;
+    // Query Surfline APIs for break details and forecast
+    const { surflineID } = res.locals;
     const spotReport = axios.get(
       `https://services.surfline.com/kbyg/spots/reports?spotId=${surflineID}`
     );
     const forecast = axios.get(
       `https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${surflineID}&days=5&intervalHours=6`
     );
-    // Store response on res.locals
-    res.locals.surflineID = surflineID;
     const promArr = await Promise.all([spotReport, forecast]);
+
+    // Store query responses
     res.locals.spotReport = promArr[0].data;
     res.locals.forecast = promArr[1].data;
 
@@ -50,10 +53,10 @@ report.fetchData = async (req, res, next) => {
   }
 };
 
-// 4) process data from surfline API
-report.processData = (req, res, next) => {
+report.processData = async (req, res, next) => {
   const { spotReport, forecast, surflineID } = res.locals;
 
+  // Process API data for database & client
   res.locals.finalReport = {
     surflineID,
     spotName: spotReport.spot.name,
@@ -62,15 +65,9 @@ report.processData = (req, res, next) => {
     forecast: forecast.data.wave,
   };
 
-  return next();
-};
-
-report.updateDB = async (req, res, next) => {
+  // Save new report to database
   try {
-    // 5) write updated report to database
     await db.create(res.locals.finalReport);
-
-    res.locals.finalReport.message = 'Succesfully saved new surf report';
     return next();
   } catch (err) {
     return next({ log: err.message });
@@ -78,54 +75,3 @@ report.updateDB = async (req, res, next) => {
 };
 
 module.exports = report;
-
-// VENICE BREAKWATER: 590927576a2e4300134fbed8
-// MALIBU SURFRIDER: 5a8cacffb0f634001ada08fb
-
-// https://services.surfline.com/kbyg/spots/reports?spotId={spotId}
-/* Surfline Response
-{
-  spot: {
-    name: String
-  },
-  forecast: {
-    waveHeight: {
-      min: Integer,
-      max: Integer,
-      humanRelation: String
-    },
-    tide: {
-     // Misc tide info 
-    },
-    waterTemp: {
-      min: Integer,
-      max: Integer
-    },
-    weather: {
-      temperature: Integer
-    }
-  }
-}
-*/
-
-// https://services.surfline.com/kbyg/spots/forecasts/{type}?{params}
-// https://services.surfline.com/kbyg/spots/forecasts/wave?spotId={spotId}&days=1&intervalHours=3
-/* Surfline Reponse
-{
-  data: {
-    wave: [
-      {
-        timestamp: number,
-        surf: {
-          min: Float,
-          max: Float,
-          optimalScore: float
-        }
-      },
-      {
-        // more timestamps
-      },
-    ]
-  }
-}
-*/

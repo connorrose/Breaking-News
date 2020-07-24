@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unused-state */
-// App component logic
 import React, { Component } from 'react';
 import Search from './containers/Search';
 import Settings from './containers/Settings';
@@ -28,7 +27,6 @@ class App extends Component {
     fetch(`/api/${localBreak}`)
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         const { surflineID, spotName, humanRelation, waterTemp, forecast } = data;
         this.setState({ surflineID, spotName, humanRelation, waterTemp, forecast });
       })

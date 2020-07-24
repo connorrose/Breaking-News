@@ -22,11 +22,9 @@ class Search extends Component {
 
   handleSearch() {
     let { query } = this.state;
-    // console.log('Handling search...');
 
     if (query !== '') {
       query = query.split(' ').join('%20');
-      // console.log('Sending search request...');
 
       fetch(`/search?spot=${query}`)
         .then((response) => response.json())

@@ -15,9 +15,11 @@ mongoose
   .then(() => console.log('Connected to MongoDB: Surf-App'))
   .catch((err) => console.log(err));
 
-// Set 15 min document expiration in development, 12 hours in production
-const expiry = NODE_ENV === 'development' ? 900 : 43200;
+// Set 1 hour document expiration in development, 18 hours in production
+// TODO: Check if millisecond conversion is needed
+const expiry = NODE_ENV === 'development' ? 3600 : 64800;
 
+// SPOT
 const spotSchema = new Schema({
   surflineID: { type: String, required: true },
   spotName: { type: String, required: true },
@@ -42,9 +44,13 @@ const spotSchema = new Schema({
 
 const Spot = mongoose.model('spot', spotSchema);
 
+// USER
 const userSchema = new Schema({
   username: { type: String, required: true },
-  homeBreak: { type: String },
+  homeBreak: {
+    breakName: { type: String },
+    surflineID: { type: String },
+  },
   days: { type: Number, default: 2 },
   height: { type: Number, default: 1 },
 });

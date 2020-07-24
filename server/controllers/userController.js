@@ -1,65 +1,65 @@
+/* eslint-disable no-console */
 const { Spot, User } = require('../models/reportModels');
 
 const userController = {};
 
 userController.findUser = async (req, res, next) => {
-  // console.log(`SESSION: ${JSON.stringify(req.session)}`);
-  const { passport } = req.session;
+  try {
+    const { passport } = req.session;
 
-  // Check if user info is attached to session via passport
-  if (passport !== undefined) {
-    const userID = passport.user;
-    try {
-      // Get user data
+    // Check if user info is attached to session via passport
+    if (passport !== undefined && passport.user !== undefined) {
+      const userID = passport.user;
+
+      // Get user data from database
       const userData = await User.findOne({ _id: userID });
-      let { username, homeBreak, days, height } = userData;
+      const { username, homeBreak, days, height } = userData;
 
-      // Get break name from Surfline ID
-      if (homeBreak) {
-        const { spotName } = await Spot.findOne({ surflineID: homeBreak });
-        homeBreak = spotName;
+      // Validate & build user object
+      const userObj = {};
+      userObj.userID = userID;
+      userObj.username = username || 'username not found';
+      userObj.days = days || 2;
+      userObj.height = height || 1;
+      if (typeof homeBreak === 'object') {
+        const { breakName, surflineID } = homeBreak;
+
+        userObj.homeBreak = {};
+        userObj.homeBreak.breakName = breakName || null;
+        userObj.homeBreak.surflineID = surflineID || null;
+      } else {
+        userObj.homeBreak = {};
       }
 
-      // Validate
-      username = username || 'unknown user';
-      homeBreak = homeBreak || null;
-      days = days || 2;
-      height = height || 1;
-
-      // Save user object for response
-      res.locals.user = { username, homeBreak, days, height };
-      return next();
-    } catch (err) {
-      return next({
-        log: `Error in userController.findUser during User lookup: ${err}`,
-        messge: { err: 'There was an error retrieving your user information' },
-      });
+      res.locals.user = userObj;
     }
-  } else {
-    // Return empty object to client if user does not exist
-    res.locals.user = {};
+
+    return next();
+  } catch (err) {
+    console.log(`ERROR in userController.findUser: ${err}`);
     return next();
   }
 };
 
 userController.setHomeBreak = async (req, res, next) => {
-  // req.params.surflineID
   const { surflineID } = req.params;
-  if (surflineID) {
-    try {
-      const { spotName } = await Spot.findOne({ surflineID });
-      if (spotName) {
-        const userID = req.session.passport.user;
-        await User.findOneAndUpdate({ _id: userID }, { homeBreak: surflineID });
-        res.locals.spotName = spotName;
-        return next();
-      }
-      return next({ log: 'Could not locate break in databse' });
-    } catch (err) {
-      return next({ log: `Error setting user break: ${err}` });
+  if (res.locals.user === undefined || typeof surflineID !== 'string') return next();
+
+  try {
+    const newBreak = await Spot.findOne({ surflineID });
+    if (newBreak !== null) {
+      const { userID } = res.locals.user;
+      const { spotName } = newBreak;
+      const breakName = spotName || 'name not found';
+      const homeBreak = { breakName, surflineID };
+
+      await User.findByIdAndUpdate(userID, { homeBreak });
+      res.locals.breakName = breakName;
     }
-  } else {
-    return next({ message: { err: 'What have you done?!' } });
+    return next();
+  } catch (err) {
+    console.log(`ERROR in userController.setHomeBreak: ${err}`);
+    return next();
   }
 };
 

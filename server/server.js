@@ -17,12 +17,14 @@ const userRouter = require('./routes/user');
 
 /* ----- PRE-CONFIG ----- */
 
+const SESSION_EXPIRY = 1000 * 60 * 60 * 24; // 1 day
+
 // CONNECT SESSION STORE
 const store = new MongoDBStore(
   {
     uri: process.env.MONGO_URI,
     collection: 'userSessions',
-    expires: 1000 * 60 * 60 * 24, // 1 day
+    expires: SESSION_EXPIRY,
     connectionOptions: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -70,7 +72,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      maxAge: SESSION_EXPIRY,
     },
     store,
     resave: false,
@@ -118,6 +120,11 @@ app.get(
     failureRedirect: '/login/failed',
   })
 );
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('http://localhost:3000');
+});
 
 /* ----- ERROR HANDLING ----- */
 

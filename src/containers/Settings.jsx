@@ -20,7 +20,9 @@ class Settings extends Component {
       .then((response) => response.json())
       .then((user) => {
         const { username, homeBreak, days, height } = user;
-        return username ? this.setState({ username, homeBreak, days, height }) : null;
+        return username
+          ? this.setState({ username, days, height, homeBreak: homeBreak.breakName })
+          : null;
       })
       .catch((err) => console.log(err));
   }
@@ -35,9 +37,7 @@ class Settings extends Component {
         .then((response) => response.json())
         .then((data) => {
           const { homeBreak } = data;
-          return this.setState(
-            homeBreak ? { homeBreak } : { homeBreak: "Couldn't fetch break name" }
-          );
+          return homeBreak ? this.setState({ homeBreak }) : null;
         })
         .catch((err) => console.log(err));
     }

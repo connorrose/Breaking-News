@@ -2,11 +2,18 @@ const router = require('express').Router();
 const userController = require('../controllers/userController');
 
 router.get('/', userController.findUser, (req, res) => {
-  res.status(200).json(res.locals.user);
+  const userData = res.locals.user || {};
+  res.status(200).json(userData);
 });
 
-router.post('/break/:surflineID', userController.setHomeBreak, (req, res) => {
-  res.status(200).json({ homeBreak: res.locals.spotName });
-});
+router.post(
+  '/break/:surflineID',
+  userController.findUser,
+  userController.setHomeBreak,
+  (req, res) => {
+    const homeBreak = res.locals.breakName || null;
+    res.status(200).json({ homeBreak });
+  }
+);
 
 module.exports = router;

@@ -1,15 +1,16 @@
 const axios = require('axios');
 
 const search = {};
-// req.query.spot = search string
 
 search.fetchQuery = async (req, res, next) => {
+  // call surfline API with search query & attach hits array to res.locals
+  // req.query.spot = search string
   try {
-    // call surfline API with search query & attach hits array to res.locals
     const searchResult = await axios.get(
       `https://services.surfline.com/search/site?q=${req.query.spot}`
     );
 
+    // See notes.txt for response shape
     res.locals.hits = searchResult.data[0].hits.hits;
     return next();
   } catch (err) {
@@ -30,27 +31,3 @@ search.processData = (req, res, next) => {
 };
 
 module.exports = search;
-
-/*
-https://services.surfline.com/search/site?q={venice}
-
-[
-  {
-    hits: {
-      hits: [
-        {
-          _id: String
-          _score: Number
-          _source: {
-            breadCrumbs: [country, state, county] (Strings)
-            name: String
-          }
-        },
-        { next spot }
-      ]
-    }
-  },
-  {#2 @ index 1}
-]
-
-*/

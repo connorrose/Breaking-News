@@ -6,7 +6,6 @@ router.get(
   reportController.searchDB,
   reportController.fetchData,
   reportController.processData,
-  reportController.updateDB,
   (req, res) => {
     res.status(200).json(res.locals.finalReport);
   }
