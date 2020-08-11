@@ -214,10 +214,8 @@ h4 > p {
 }
 
 .interval {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-content: center;
+  display: inline-grid;
+  grid-template-columns: repeat(4, 25%);
   background-color: rgba(var(--off-white), 1);
   border: var(--display-border);
   border-radius: 4px;
