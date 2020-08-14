@@ -35,7 +35,7 @@ class App extends Component {
 
   // eslint-disable-next-line class-methods-use-this
   handleLogin() {
-    window.open('http://localhost:3000/login', '_self');
+    window.open('https://shielded-ravine-49316.herokuapp.com/login', '_self');
   }
 
   render() {
