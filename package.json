@@ -23,6 +23,9 @@
     "url": "https://github.com/connorrose/Surf/issues"
   },
   "homepage": "https://github.com/connorrose/Surf#readme",
+  "engines": {
+    "node": "12.x"
+  },
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
