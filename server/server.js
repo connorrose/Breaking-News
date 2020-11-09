@@ -41,7 +41,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: 'https://shielded-ravine-49316.herokuapp.com/login/callback',
+      callbackURL: 'https://surfreport.dev/login/callback',
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOneAndUpdate(
@@ -123,7 +123,7 @@ app.get(
 
 app.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('https://shielded-ravine-49316.herokuapp.com/');
+  res.redirect('https://surfreport.dev/');
 });
 
 /* ----- ERROR HANDLING ----- */
