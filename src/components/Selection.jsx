@@ -4,7 +4,7 @@ const logout = function handleLogout() {
   fetch('/logout')
     .then(() => {
       // Force page refresh to clear user data from display
-      window.open('https://shielded-ravine-49316.herokuapp.com/', '_self');
+      window.open('https://surfreport.dev', '_self');
     })
     .catch((err) => console.log(err));
 };
