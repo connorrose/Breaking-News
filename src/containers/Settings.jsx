@@ -1,34 +1,30 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import Selection from '../components/Selection';
+import { useSetState } from '../hooks/useSetState';
 
-class Settings extends Component {
-  constructor(props) {
-    super(props);
+const initialUserState = {
+  username: null,
+  homeBreak: null,
+  days: null,
+  height: null,
+};
 
-    this.state = {
-      username: null,
-      homeBreak: null,
-      days: null,
-      height: null,
-    };
+const Settings = ({ currentBreak }) => {
+  const [userData, setUserData] = useSetState(initialUserState);
 
-    this.handleSetHome = this.handleSetHome.bind(this);
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     fetch('/user')
       .then((response) => response.json())
       .then((user) => {
         const { username, homeBreak, days, height } = user;
-        return username
-          ? this.setState({ username, days, height, homeBreak: homeBreak.breakName })
-          : null;
+        if (username) {
+          setUserData({ username, days, height, homeBreak: homeBreak.breakName });
+        }
       })
-      .catch((err) => console.log(err));
-  }
+      .catch(console.error);
+  }, []);
 
-  handleSetHome() {
-    const { currentBreak } = this.props;
+  const handleSetHome = () => {
     if (!currentBreak) {
       // eslint-disable-next-line no-alert
       alert('No break selected!\nUse the search feature to find a break.');
@@ -37,41 +33,39 @@ class Settings extends Component {
         .then((response) => response.json())
         .then((data) => {
           const { homeBreak } = data;
-          return homeBreak ? this.setState({ homeBreak }) : null;
+          if (homeBreak) setUserData({ homeBreak });
         })
-        .catch((err) => console.log(err));
+        .catch(console.error);
     }
-  }
+  };
 
-  render() {
-    const { username, homeBreak, days, height } = this.state;
+  const { username, homeBreak, days, height } = userData;
 
-    return (
-      <div id="settings-container">
-        <h2>Settings</h2>
-        {username && (
-          <>
-            <p id="greeting">Welcome, {username}!</p>
-            <div id="current-settings">
-              <p>
-                <strong>Home Break: </strong>
-                {homeBreak || 'None selected'}
-              </p>
-              <p id="alert-lead">
-                <strong>Alert Lead Time: </strong>
-                {days} days
-              </p>
-              <p>
-                <strong>Alert Min Wave Height: </strong>
-                {height} ft
-              </p>
-            </div>
-            <Selection onSetHome={this.handleSetHome} />
-          </>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div id="settings-container">
+      <h2>Settings</h2>
+      {username && (
+        <>
+          <p id="greeting">Welcome, {username}!</p>
+          <div id="current-settings">
+            <p>
+              <strong>Home Break: </strong>
+              {homeBreak || 'None selected'}
+            </p>
+            <p id="alert-lead">
+              <strong>Alert Lead Time: </strong>
+              {days} days
+            </p>
+            <p>
+              <strong>Alert Min Wave Height: </strong>
+              {height} ft
+            </p>
+          </div>
+          <Selection onSetHome={handleSetHome} />
+        </>
+      )}
+    </div>
+  );
+};
 
 export default Settings;

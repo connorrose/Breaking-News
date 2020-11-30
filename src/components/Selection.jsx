@@ -6,7 +6,7 @@ const logout = function handleLogout() {
       // Force page refresh to clear user data from display
       window.open('https://surfreport.dev', '_self');
     })
-    .catch((err) => console.log(err));
+    .catch(console.err);
 };
 
 const Selection = ({ onSetHome }) => (

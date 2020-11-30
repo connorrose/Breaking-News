@@ -1,62 +1,52 @@
 /* eslint-disable react/no-unused-state */
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import Search from './containers/Search';
 import Settings from './containers/Settings';
 import Report from './components/Report';
+// import { useSetState } from './hooks/useSetState';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+function handleLogin() {
+  window.open('https://surfreport.dev/login', '_self');
+}
 
-    this.state = {
-      surflineID: '',
-      spotName: null,
-      humanRelation: null,
-      waterTemp: null,
-      forecast: [],
-      user: null,
-    };
+const initialReportState = {
+  surflineID: '',
+  spotName: null,
+  humanRelation: null,
+  waterTemp: null,
+  forecast: [],
+};
 
-    this.handleSelection = this.handleSelection.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-  }
+const App = () => {
+  const [reportData, setReportData] = useState(initialReportState);
 
-  handleSelection(e) {
-    const localBreak = e.target.id;
-
-    fetch(`/api/${localBreak}`)
+  const handleSelection = useCallback((e) => {
+    fetch(`/api/${e.target.id}`)
       .then((response) => response.json())
       .then((data) => {
         const { surflineID, spotName, humanRelation, waterTemp, forecast } = data;
-        this.setState({ surflineID, spotName, humanRelation, waterTemp, forecast });
+        setReportData({ surflineID, spotName, humanRelation, waterTemp, forecast });
       })
-      .catch((err) => console.log(err));
-  }
+      .catch(console.error);
+  });
 
-  // eslint-disable-next-line class-methods-use-this
-  handleLogin() {
-    window.open('https://surfreport.dev/login', '_self');
-  }
+  const { surflineID } = reportData;
 
-  render() {
-    const { surflineID } = this.state;
-
-    return (
-      <>
-        <header>
-          <h1>Surf's Up!</h1>
-          <button id="login" type="button" onClick={this.handleLogin}>
-            Login
-          </button>
-        </header>
-        <div id="control-container">
-          <Search onSelection={this.handleSelection} />
-          <Settings currentBreak={surflineID} />
-        </div>
-        {surflineID !== '' && <Report reportData={this.state} />}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <header>
+        <h1>Surf's Up!</h1>
+        <button id="login" type="button" onClick={handleLogin}>
+          Login
+        </button>
+      </header>
+      <div id="control-container">
+        <Search onSelection={handleSelection} />
+        <Settings currentBreak={surflineID} />
+      </div>
+      {surflineID && <Report reportData={reportData} />}
+    </>
+  );
+};
 
 export default App;
