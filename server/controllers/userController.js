@@ -63,4 +63,34 @@ userController.setHomeBreak = async (req, res, next) => {
   }
 };
 
+userController.setLeadTime = async (req, res, next) => {
+  const { days } = req.params;
+  if (res.locals.user === undefined || typeof days !== 'number') return next();
+
+  try {
+    const { userID } = res.locals.user;
+    await User.findByIdAndUpdate(userID, { days });
+    res.locals.leadTime = days;
+    return next();
+  } catch (err) {
+    console.log(`ERROR in userController.setMinWaveHeight: ${err}`);
+    return next();
+  }
+};
+
+userController.setMinWaveHeight = async (req, res, next) => {
+  const { height } = req.params;
+  if (res.locals.user === undefined || typeof height !== 'number') return next();
+
+  try {
+    const { userID } = res.locals.user;
+    await User.findByIdAndUpdate(userID, { height });
+    res.locals.minWaveHeight = height;
+    return next();
+  } catch (err) {
+    console.log(`ERROR in userController.setMinWaveHeight: ${err}`);
+    return next();
+  }
+};
+
 module.exports = userController;

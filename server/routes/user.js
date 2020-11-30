@@ -16,4 +16,19 @@ router.post(
   }
 );
 
+router.post('/time/:days', userController.findUser, userController.setLeadTime, (req, res) => {
+  const leadTime = res.locals.leadTime || null;
+  res.status(200).json({ leadTime });
+});
+
+router.post(
+  '/height/:height',
+  userController.findUser,
+  userController.setMinWaveHeight,
+  (req, res) => {
+    const minWaveHeight = res.locals.minWaveHeight || null;
+    res.status(200).json({ minWaveHeight });
+  }
+);
+
 module.exports = router;
